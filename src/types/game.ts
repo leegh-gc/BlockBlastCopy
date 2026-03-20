@@ -44,6 +44,9 @@ export interface DragState {
   offsetY: number;
 }
 
+// 오디오/햅틱 이벤트 종류
+export type AudioEvent = 'place' | 'clear' | 'combo' | 'gameover' | null
+
 // 전체 게임 상태
 export interface GameState {
   board: Cell[][];         // 8x8 2D 배열
@@ -56,4 +59,5 @@ export interface GameState {
   animatingLines: { rows: number[]; cols: number[] } | null; // 애니메이션 중인 라인
   isAnimating: boolean;    // 라인 제거 애니메이션 진행 중 (입력 차단용)
   isShaking: boolean;      // 게임 오버 보드 셰이크
+  lastAudioEvent: AudioEvent; // 사운드/햅틱 트리거용 마지막 이벤트
 }

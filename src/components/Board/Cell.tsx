@@ -12,6 +12,8 @@ interface CellProps {
 }
 
 const areEqual = (prev: CellProps, next: CellProps) =>
+  prev.row === next.row &&
+  prev.col === next.col &&
   prev.filled === next.filled &&
   prev.color === next.color &&
   prev.isPreview === next.isPreview &&

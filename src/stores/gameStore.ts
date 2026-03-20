@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { GameState, Cell, DragState } from '../types/game'
+import type { GameState, Cell, DragState, AudioEvent } from '../types/game'
 import { STORAGE_KEY } from '../utils/storage'
 import { getRandomBlocks } from '../utils/blockUtils'
 import { BOARD_SIZE } from '../constants/game'
@@ -30,6 +30,7 @@ interface GameStore extends GameState {
   setDragState: (dragState: Partial<DragState>) => void
   placeBlock: (blockId: string, row: number, col: number) => void
   generateNewBlocks: () => void
+  clearAudioEvent: () => void
 }
 
 export const useGameStore = create<GameStore>()(
@@ -46,6 +47,7 @@ export const useGameStore = create<GameStore>()(
     animatingLines: null,
     isAnimating: false,
     isShaking: false,
+    lastAudioEvent: null,
   })
 
   return {
@@ -100,6 +102,9 @@ export const useGameStore = create<GameStore>()(
       const remaining = currentBlocks.filter((b) => b.id !== blockId)
       const nextBlocks = remaining.length === 0 ? getRandomBlocks(3) : remaining
 
+      const placeAudioEvent: AudioEvent = 'place'
+      const clearAudioEvent: AudioEvent = newCombo > 1 ? 'combo' : 'clear'
+
       if (lineCount > 0) {
         // 라인 애니메이션: 먼저 animatingLines 설정, 300ms 후 실제 제거
         set({
@@ -110,6 +115,7 @@ export const useGameStore = create<GameStore>()(
           comboCount: newCombo,
           animatingLines: { rows: completedRows, cols: completedCols },
           isAnimating: true,
+          lastAudioEvent: clearAudioEvent,
         })
         setTimeout(() => {
           const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
@@ -120,6 +126,7 @@ export const useGameStore = create<GameStore>()(
               animatingLines: null,
               isAnimating: false,
               isShaking: true,
+              lastAudioEvent: 'gameover',
             })
             setTimeout(() => set({ isGameOver: true, isShaking: false }), 500)
           } else {
@@ -146,6 +153,7 @@ export const useGameStore = create<GameStore>()(
             animatingLines: null,
             isAnimating: false,
             isShaking: true,
+            lastAudioEvent: 'gameover',
           })
           setTimeout(() => set({ isGameOver: true, isShaking: false }), 500)
         } else {
@@ -159,6 +167,7 @@ export const useGameStore = create<GameStore>()(
             animatingLines: null,
             isAnimating: false,
             isGameOver: false,
+            lastAudioEvent: placeAudioEvent,
           })
         }
       }
@@ -167,6 +176,8 @@ export const useGameStore = create<GameStore>()(
     generateNewBlocks: () => {
       set({ currentBlocks: getRandomBlocks(3) })
     },
+
+    clearAudioEvent: () => set({ lastAudioEvent: null }),
   }
 },
 {

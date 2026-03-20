@@ -36,10 +36,10 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
     if (!animatingLines) return new Set<string>()
     const keys = new Set<string>()
     animatingLines.rows.forEach((r) => {
-      for (let c = 0; c < 8; c++) keys.add(`${r}-${c}`)
+      for (let c = 0; c < BOARD_SIZE; c++) keys.add(`${r}-${c}`)
     })
     animatingLines.cols.forEach((c) => {
-      for (let r = 0; r < 8; r++) keys.add(`${r}-${c}`)
+      for (let r = 0; r < BOARD_SIZE; r++) keys.add(`${r}-${c}`)
     })
     return keys
   }, [animatingLines])
