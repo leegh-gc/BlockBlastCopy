@@ -12,11 +12,12 @@ interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInvalid, isAnimating }) => {
-  const bg = filled && color ? color : 'bg-gray-800'
+  const bg = filled && color ? color : 'bg-gray-100'
 
   return (
     <motion.div
-      className={['border border-gray-700 rounded-sm relative', bg].join(' ')}
+      className={['rounded-sm relative', bg].join(' ')}
+      style={{ border: '1px solid #E5E5EA' }}
       style={{ aspectRatio: '1 / 1' }}
       animate={isAnimating ? { opacity: 0, scale: 0.7 } : { opacity: 1, scale: 1 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}

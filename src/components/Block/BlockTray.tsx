@@ -13,7 +13,8 @@ const BlockTray: React.FC<BlockTrayProps> = ({ boardRef }) => {
 
   return (
     <div
-      className="flex items-center justify-around w-full mt-6 p-4 bg-gray-900 rounded-lg"
+      className="flex items-center justify-around w-full mt-4 p-4 rounded-2xl"
+      style={{ background: '#FFFFFF' }}
       data-testid="block-tray"
     >
       {currentBlocks.map((block) => (
