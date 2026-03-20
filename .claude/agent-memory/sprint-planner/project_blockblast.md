@@ -51,15 +51,37 @@ type: project
 - L1: `BOARD_SIZE` 상수 4개 파일 중복 → `src/constants/game.ts` 단일 파일로 추출 예정
 - M2: `ScoreDisplay.tsx` useEffect 의존성 이슈 → eslint-disable 처리로 의도적 억제 완료 (추가 처리 불필요)
 
-### Sprint 3 - 계획 수립 완료 (2026-03-20)
+### Sprint 3 - 완료 (2026-03-20)
 - 기간: 2026-03-21 ~ 2026-04-03 (2주)
 - Phase: Phase 2 - 개선 및 최적화
 - 목표: Sprint 2 기술 부채 해소 + 애니메이션 정교화 + Lighthouse 90+ · 번들 500KB · 모바일 60fps
 - 계획 문서: `docs/sprint/sprint3/sprint-plan.md`
-- 현재 브랜치: `main_sprint-2` → `main_sprint-3` 신규 브랜치로 작업
+- 검증 보고서: `docs/sprint/sprint3/verification-report.md`
+- 브랜치: `main_sprint-3`
+- 빌드: 42/42 테스트 통과, gzip 105.95KB (GameOverModal 0.72KB 별도 청크)
 
-**Why:** Phase 2 품질 개선 목표(M3: 품질 개선 릴리스, Sprint 4 종료) 달성을 위한 기반 마련
-**How to apply:** Day 1-2 기술 부채(TD1 입력 차단, TD2 상수 추출) 우선 처리 후 애니메이션 → 성능 순서로 진행
+**주요 달성 사항:**
+- TD1(isAnimating 드래그 차단), TD2(BOARD_SIZE 단일 진입점) 해소
+- Cell React.memo + areEqual 적용, BlockPreview React.memo 적용
+- LineClearEffect white flash, 게임오버 보드 셰이크 500ms, 드래그 프리뷰 크로스페이드
+- GameOverModal lazy 코드 스플리팅, passive 이벤트 리스너 적용
+
+**Sprint 4 이월 항목:**
+- Board.tsx animatingSet 루프 하드코딩 `8` (BOARD_SIZE 교체 필요 - Medium)
+- 바운스 복귀 애니메이션 미구현 (DraggableBlock spring 전환 필요)
+- LineClearEffect gap/padding 미보정 (Low - 조건부 수정)
+- DraggableBlock Y오프셋 `-75px` 하드코딩 (Low)
+- Cell areEqual row/col 누락 (Low)
+
+### Sprint 4 - 계획 수립 완료 (2026-03-20)
+- 기간: 2026-04-04 ~ 2026-04-17 (2주)
+- Phase: Phase 2 - 개선 및 최적화
+- 목표: Sprint 3 기술 부채 해소 + PWA 구현 + 사운드/햅틱 + 크로스 브라우저 테스트
+- 계획 문서: `docs/sprint/sprint4/sprint-plan.md`
+- 브랜치: `main_sprint-3` → `main_sprint-4` 신규 브랜치로 작업
+
+**Why:** M3: 품질 개선 릴리스(Sprint 4 종료) 마일스톤 달성. 오프라인 플레이·홈 화면 설치·사운드·햅틱으로 네이티브 앱 수준 경험 제공
+**How to apply:** Day 1-2 기술 부채(TD1 필수, TD2-TD5 권장) 처리 → Day 3-5 PWA → Day 6-8 사운드 → Day 9 햅틱 → Day 10-14 테스트/마무리 순서로 진행
 
 ## 핵심 아키텍처 결정 사항
 
