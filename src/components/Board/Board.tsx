@@ -46,14 +46,12 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
     <div
       ref={boardRef}
       className="relative w-full max-w-[500px] mx-auto rounded-2xl overflow-hidden"
-      style={{ background: '#FFFFFF' }}
-      style={{ touchAction: 'none' }}
+      style={{ background: '#FFFFFF', touchAction: 'none' }}
       data-testid="game-board"
     >
       <div
         className="grid gap-0.5 p-1 rounded-lg"
-        style={{ background: '#FFFFFF' }}
-        style={{ gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)` }}
+        style={{ background: '#FFFFFF', gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)` }}
       >
         {board.map((row, rowIdx) =>
           row.map((cell, colIdx) => {
