@@ -18,12 +18,14 @@
 
 | 항목 | 상태 |
 |------|------|
-| 전체 진행률 | 33% (Sprint 2/6 완료) |
-| 현재 Phase | Phase 1 (MVP) 완료 - Phase 2 Sprint 3 진행 예정 |
-| 다음 마일스톤 | Phase 2 Sprint 3 완료 - 애니메이션 정교화 및 성능 최적화 |
+| 전체 진행률 | 66% (Sprint 4/6 완료) |
+| 현재 Phase | Phase 2 (개선 및 최적화) 완료 - Phase 3 Sprint 5 진행 예정 |
+| 다음 마일스톤 | Phase 3 Sprint 5 완료 - 다크 모드 및 설정 패널 |
 | 시작일 | 2026-03-20 |
 | Sprint 1 완료일 | 2026-03-20 |
 | Sprint 2 완료일 | 2026-03-20 |
+| Sprint 3 완료일 | 2026-03-20 |
+| Sprint 4 완료일 | 2026-03-20 |
 | MVP 목표일 | 2026-04-17 (Phase 1 완료) |
 | 전체 목표일 | 2026-05-01 |
 
@@ -297,12 +299,12 @@ Phase 3 Sprint 6:
 
 ---
 
-## Phase 2: 개선 및 최적화 (Sprint 3-4) 📋
+## Phase 2: 개선 및 최적화 (Sprint 3-4) ✅
 
 > **우선순위**: Should Have
 > **목표**: 게임 경험 품질 향상. 애니메이션 정교화, 성능 최적화, PWA 지원, 사운드/햅틱 추가.
 
-### Sprint 3: 애니메이션 정교화 및 성능 최적화 (Week 5-6) 📋
+### Sprint 3: 애니메이션 정교화 및 성능 최적화 (Week 5-6) ✅ 완료 (2026-03-20)
 
 **Sprint Goal**: Lighthouse 성능 점수 90+, 모바일에서 60fps 애니메이션, 번들 크기 500KB 이하
 
@@ -337,6 +339,9 @@ Phase 3 Sprint 6:
 - 모든 애니메이션이 60fps 유지
 - iOS Safari, Android Chrome에서 터치 드래그 정상 동작
 
+### Sprint 3 검증 결과
+- [검증 보고서](sprint/sprint3/verification-report.md)
+
 ### Sprint 3 - 기술 고려사항
 - `React.memo`는 셀 컴포넌트에 반드시 적용 (64개 셀이 매 프레임 리렌더링되면 성능 저하)
 - Framer Motion의 `layout` 애니메이션은 성능 비용이 크므로 필요한 곳에만 사용
@@ -363,11 +368,11 @@ Phase 3 Sprint 6:
 
 ---
 
-### Sprint 4: PWA 및 사운드/햅틱 (Week 7-8) 📋
+### Sprint 4: PWA 및 사운드/햅틱 (Week 7-8) ✅ 완료 (2026-03-20)
 
 **Sprint Goal**: 오프라인 플레이 가능, 홈 화면 설치 가능, 사운드/햅틱 피드백 추가
 
-- ⬜ **PWA 구현** [복잡도: L]
+- ✅ **PWA 구현** [복잡도: L]
   - `public/manifest.json` 설정 (PRD 섹션 9.3 기반)
   - Service Worker 등록 (Vite PWA 플러그인 활용: `vite-plugin-pwa`)
   - 오프라인 캐싱 전략 (Cache First)
@@ -376,7 +381,7 @@ Phase 3 Sprint 6:
   - `<meta name="theme-color">` 설정
   - 검증: Chrome DevTools Application 탭에서 PWA 체크리스트 통과
 
-- ⬜ **사운드 효과** [복잡도: M]
+- ✅ **사운드 효과** [복잡도: M]
   - Web Audio API 또는 Howler.js 활용
   - 블록 배치 사운드 (짧은 "톡" 소리)
   - 라인 제거 사운드 (클리어 효과음)
@@ -385,7 +390,7 @@ Phase 3 Sprint 6:
   - 사운드 on/off 토글
   - 검증: 각 게임 이벤트에 올바른 사운드 재생
 
-- ⬜ **햅틱 피드백** [복잡도: S]
+- ✅ **햅틱 피드백** [복잡도: S]
   - Vibration API 활용 (`navigator.vibrate()`)
   - 블록 배치 시 짧은 진동 (50ms)
   - 라인 제거 시 중간 진동 (100ms)
@@ -406,6 +411,9 @@ Phase 3 Sprint 6:
 - Lighthouse PWA 점수 통과
 - 사운드/햅틱이 동작하고 개별 토글 가능
 - PRD 섹션 3.3의 모든 브라우저에서 정상 동작 확인
+
+### Sprint 4 검증 결과
+- [검증 보고서](sprint/sprint4/verification-report.md)
 
 ### Sprint 4 - 기술 고려사항
 - `vite-plugin-pwa`로 Service Worker 자동 생성 권장 (수동 구현 대비 유지보수 용이)
@@ -568,7 +576,7 @@ Phase 3 Sprint 6:
 |----------|------------|------------|--------|
 | M1: 프로토타입 | Sprint 1 종료 (2026-04-03) | 2026-03-20 | 보드 렌더링 + 블록 드래그 데모 |
 | M2: MVP 릴리스 | Sprint 2 종료 (2026-04-17) | 2026-03-20 | 플레이 가능한 완전한 게임 (배포) |
-| M3: 품질 개선 릴리스 | Sprint 4 종료 (2026-05-15) | - | PWA + 사운드 + 성능 최적화 |
+| M3: 품질 개선 릴리스 | Sprint 4 종료 (2026-05-15) | 2026-03-20 | PWA + 사운드 + 성능 최적화 |
 | M4: 기능 확장 릴리스 | Sprint 6 종료 (2026-06-12) | - | 다크 모드 + 타임어택 + 공유 |
 
 ---

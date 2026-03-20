@@ -550,3 +550,9 @@ function GameEffects() {
 - [x] ROADMAP.md의 기술 고려사항(vite-plugin-pwa, Web Audio autoplay, Vibration iOS 미지원, 사운드 포맷) 모두 반영
 - [x] 기술 부채 처리(TD1~TD5) 우선순위와 필수/선택 구분이 명확함
 - [x] 파일이 올바른 경로(`docs/sprint/sprint4/sprint-plan.md`)에 저장됨
+
+---
+
+## 검증 결과
+
+- [검증 보고서](verification-report.md)
