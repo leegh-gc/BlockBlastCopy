@@ -17,8 +17,8 @@ const DraggableBlock: React.FC = () => {
   const block = currentBlocks.find((b) => b.id === dragState.blockId)
   if (!block) return null
 
-  const x = dragState.currentPos.col // col에 픽셀 X 저장
-  const y = dragState.currentPos.row // row에 픽셀 Y 저장
+  const x = dragState.currentPos.x
+  const y = dragState.currentPos.y
 
   return (
     <div

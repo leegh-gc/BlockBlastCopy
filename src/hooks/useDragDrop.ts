@@ -41,7 +41,7 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
       setDragState({
         isDragging: true,
         blockId: block.id,
-        currentPos: { row: clientY, col: clientX }, // 픽셀 좌표를 row/col에 임시 저장
+        currentPos: { x: clientX, y: clientY },
         boardPos: getBoardPosition(clientX, clientY),
         offsetX: 0,
         offsetY: 0,
@@ -54,7 +54,7 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
     (clientX: number, clientY: number) => {
       if (!draggingBlockRef.current) return
       setDragState({
-        currentPos: { row: clientY, col: clientX },
+        currentPos: { x: clientX, y: clientY },
         boardPos: getBoardPosition(clientX, clientY),
       })
     },

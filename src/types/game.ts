@@ -28,13 +28,19 @@ export interface Block {
   color: string;
 }
 
+// 픽셀 좌표 (화면 좌표계)
+export interface PixelPosition {
+  x: number;
+  y: number;
+}
+
 // 드래그 상태
 export interface DragState {
   isDragging: boolean;
-  blockId: string | null;       // 드래그 중인 Block 인스턴스 ID
-  currentPos: Position | null;  // 현재 커서/터치 위치 (픽셀)
-  boardPos: Position | null;    // 보드 위 그리드 좌표 (드롭 타겟)
-  offsetX: number;              // 클릭/터치 시작 지점과 블록 좌상단의 X 오프셋
+  blockId: string | null;           // 드래그 중인 Block 인스턴스 ID
+  currentPos: PixelPosition | null; // 현재 커서/터치 위치 (픽셀)
+  boardPos: Position | null;        // 보드 위 그리드 좌표 (드롭 타겟)
+  offsetX: number;                  // 클릭/터치 시작 지점과 블록 좌상단의 X 오프셋
   offsetY: number;
 }
 
