@@ -53,4 +53,5 @@ export interface GameState {
   dragState: DragState;
   isGameOver: boolean;
   comboCount: number;      // 연속 라인 제거 횟수
+  animatingLines: { rows: number[]; cols: number[] } | null; // 애니메이션 중인 라인
 }

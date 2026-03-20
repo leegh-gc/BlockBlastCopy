@@ -40,6 +40,7 @@ export const useGameStore = create<GameStore>((set, get) => {
     dragState: initialDragState,
     isGameOver: false,
     comboCount: 0,
+    animatingLines: null,
   })
 
   return {
@@ -94,18 +95,39 @@ export const useGameStore = create<GameStore>((set, get) => {
       const remaining = currentBlocks.filter((b) => b.id !== blockId)
       const nextBlocks = remaining.length === 0 ? getRandomBlocks(3) : remaining
 
-      // 5. 게임 오버 판정
-      const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
-
-      set({
-        board: clearedBoard,
-        score: newScore,
-        highScore: newHighScore,
-        currentBlocks: nextBlocks,
-        dragState: initialDragState,
-        comboCount: newCombo,
-        isGameOver,
-      })
+      if (lineCount > 0) {
+        // 라인 애니메이션: 먼저 animatingLines 설정, 300ms 후 실제 제거
+        set({
+          board: newBoard,
+          score: newScore,
+          highScore: newHighScore,
+          dragState: initialDragState,
+          comboCount: newCombo,
+          animatingLines: { rows: completedRows, cols: completedCols },
+        })
+        setTimeout(() => {
+          const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
+          set({
+            board: clearedBoard,
+            currentBlocks: nextBlocks,
+            animatingLines: null,
+            isGameOver,
+          })
+        }, 300)
+      } else {
+        // 5. 게임 오버 판정
+        const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
+        set({
+          board: clearedBoard,
+          score: newScore,
+          highScore: newHighScore,
+          currentBlocks: nextBlocks,
+          dragState: initialDragState,
+          comboCount: newCombo,
+          animatingLines: null,
+          isGameOver,
+        })
+      }
     },
 
     generateNewBlocks: () => {

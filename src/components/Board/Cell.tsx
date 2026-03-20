@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 
 interface CellProps {
   filled: boolean
@@ -7,15 +8,18 @@ interface CellProps {
   col: number
   isPreview?: boolean
   isInvalid?: boolean
+  isAnimating?: boolean
 }
 
-const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInvalid }) => {
-  let bg = filled && color ? color : 'bg-gray-800'
+const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInvalid, isAnimating }) => {
+  const bg = filled && color ? color : 'bg-gray-800'
 
   return (
-    <div
+    <motion.div
       className={['border border-gray-700 rounded-sm relative', bg].join(' ')}
       style={{ aspectRatio: '1 / 1' }}
+      animate={isAnimating ? { opacity: 0, scale: 0.7 } : { opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
     >
       {isPreview && !isInvalid && (
         <div className="absolute inset-0 rounded-sm bg-green-400 opacity-40" />
@@ -23,7 +27,7 @@ const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInva
       {isInvalid && (
         <div className="absolute inset-0 rounded-sm bg-red-400 opacity-40" />
       )}
-    </div>
+    </motion.div>
   )
 })
 

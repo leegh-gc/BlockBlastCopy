@@ -13,6 +13,7 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
   const board = useGameStore((state) => state.board)
   const dragState = useGameStore((state) => state.dragState)
   const currentBlocks = useGameStore((state) => state.currentBlocks)
+  const animatingLines = useGameStore((state) => state.animatingLines)
 
   const previewInfo = useMemo(() => {
     if (!dragState.isDragging || !dragState.blockId || !dragState.boardPos) return null
@@ -28,6 +29,18 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
     if (!previewInfo) return new Set<string>()
     return new Set(previewInfo.cells.map((p) => `${p.row}-${p.col}`))
   }, [previewInfo])
+
+  const animatingSet = useMemo(() => {
+    if (!animatingLines) return new Set<string>()
+    const keys = new Set<string>()
+    animatingLines.rows.forEach((r) => {
+      for (let c = 0; c < 8; c++) keys.add(`${r}-${c}`)
+    })
+    animatingLines.cols.forEach((c) => {
+      for (let r = 0; r < 8; r++) keys.add(`${r}-${c}`)
+    })
+    return keys
+  }, [animatingLines])
 
   return (
     <div
@@ -53,6 +66,7 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
                 col={colIdx}
                 isPreview={inPreview}
                 isInvalid={inPreview && previewInfo ? !previewInfo.valid : false}
+                isAnimating={animatingSet.has(key)}
               />
             )
           })
