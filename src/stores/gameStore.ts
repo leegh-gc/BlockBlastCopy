@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import type { GameState, Cell, DragState } from '../types/game'
 import { getRandomBlocks } from '../utils/blockUtils'
 import { canPlaceBlock } from '../utils/boardUtils'
+import { getCompletedLines, clearLines } from '../utils/lineUtils'
+import { calcPlacementScore, calcLineClearScore, calcComboScore } from '../utils/scoreUtils'
 
 const BOARD_SIZE = 8
 
@@ -36,6 +38,7 @@ export const useGameStore = create<GameStore>((set, get) => {
     currentBlocks: getRandomBlocks(3),
     dragState: initialDragState,
     isGameOver: false,
+    comboCount: 0,
   })
 
   return {
@@ -53,7 +56,7 @@ export const useGameStore = create<GameStore>((set, get) => {
     },
 
     placeBlock: (blockId: string, row: number, col: number) => {
-      const { board, currentBlocks, score } = get()
+      const { board, currentBlocks, score, highScore, comboCount } = get()
       const block = currentBlocks.find((b) => b.id === blockId)
       if (!block) return
 
@@ -62,25 +65,40 @@ export const useGameStore = create<GameStore>((set, get) => {
         return
       }
 
+      // 1. 블록 배치
       const newBoard = board.map((r) => r.map((cell) => ({ ...cell })))
-      let placedCells = 0
-
       block.shape.forEach((shapeRow, dr) => {
         shapeRow.forEach((val, dc) => {
           if (val === 1) {
             newBoard[row + dr][col + dc] = { filled: true, color: block.color }
-            placedCells++
           }
         })
       })
 
+      // 2. 라인 감지
+      const { rows: completedRows, cols: completedCols } = getCompletedLines(newBoard)
+      const lineCount = completedRows.length + completedCols.length
+      const clearedBoard = lineCount > 0 ? clearLines(newBoard, completedRows, completedCols) : newBoard
+
+      // 3. 점수 계산
+      const newCombo = lineCount > 0 ? comboCount + 1 : 0
+      const addedScore =
+        calcPlacementScore(block) +
+        calcLineClearScore(lineCount) +
+        (lineCount > 0 ? calcComboScore(newCombo) : 0)
+      const newScore = score + addedScore
+      const newHighScore = newScore > highScore ? newScore : highScore
+
+      // 4. 다음 블록
       const newBlocks = currentBlocks.filter((b) => b.id !== blockId)
 
       set({
-        board: newBoard,
-        score: score + placedCells,
+        board: clearedBoard,
+        score: newScore,
+        highScore: newHighScore,
         currentBlocks: newBlocks.length === 0 ? getRandomBlocks(3) : newBlocks,
         dragState: initialDragState,
+        comboCount: newCombo,
       })
     },
 

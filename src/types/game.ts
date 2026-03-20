@@ -52,4 +52,5 @@ export interface GameState {
   currentBlocks: Block[];  // 하단에 표시되는 최대 3개 블록
   dragState: DragState;
   isGameOver: boolean;
+  comboCount: number;      // 연속 라인 제거 횟수
 }
