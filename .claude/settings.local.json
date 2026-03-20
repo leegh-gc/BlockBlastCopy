@@ -6,7 +6,11 @@
       "Bash(./node_modules/.bin/tailwindcss init:*)",
       "Bash(node:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run:*)",
+      "Bash(git:*)"
     ]
   }
 }
