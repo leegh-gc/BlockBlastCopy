@@ -1,5 +1,7 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { GameState, Cell, DragState } from '../types/game'
+import { STORAGE_KEY } from '../utils/storage'
 import { getRandomBlocks } from '../utils/blockUtils'
 import { canPlaceBlock } from '../utils/boardUtils'
 import { getCompletedLines, clearLines } from '../utils/lineUtils'
@@ -31,7 +33,9 @@ interface GameStore extends GameState {
   generateNewBlocks: () => void
 }
 
-export const useGameStore = create<GameStore>((set, get) => {
+export const useGameStore = create<GameStore>()(
+  persist(
+    (set, get) => {
   const getInitialState = (): GameState => ({
     board: createEmptyBoard(),
     score: 0,
@@ -134,4 +138,17 @@ export const useGameStore = create<GameStore>((set, get) => {
       set({ currentBlocks: getRandomBlocks(3) })
     },
   }
-})
+},
+{
+  name: STORAGE_KEY,
+  partialize: (state) => ({
+    board: state.board,
+    score: state.score,
+    highScore: state.highScore,
+    currentBlocks: state.currentBlocks,
+    isGameOver: state.isGameOver,
+    comboCount: state.comboCount,
+  }),
+}
+)
+)
