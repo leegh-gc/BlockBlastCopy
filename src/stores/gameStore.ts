@@ -4,6 +4,7 @@ import { getRandomBlocks } from '../utils/blockUtils'
 import { canPlaceBlock } from '../utils/boardUtils'
 import { getCompletedLines, clearLines } from '../utils/lineUtils'
 import { calcPlacementScore, calcLineClearScore, calcComboScore } from '../utils/scoreUtils'
+import { canAnyBlockBePlaced } from '../utils/gameOverUtils'
 
 const BOARD_SIZE = 8
 
@@ -90,15 +91,20 @@ export const useGameStore = create<GameStore>((set, get) => {
       const newHighScore = newScore > highScore ? newScore : highScore
 
       // 4. 다음 블록
-      const newBlocks = currentBlocks.filter((b) => b.id !== blockId)
+      const remaining = currentBlocks.filter((b) => b.id !== blockId)
+      const nextBlocks = remaining.length === 0 ? getRandomBlocks(3) : remaining
+
+      // 5. 게임 오버 판정
+      const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
 
       set({
         board: clearedBoard,
         score: newScore,
         highScore: newHighScore,
-        currentBlocks: newBlocks.length === 0 ? getRandomBlocks(3) : newBlocks,
+        currentBlocks: nextBlocks,
         dragState: initialDragState,
         comboCount: newCombo,
+        isGameOver,
       })
     },
 
