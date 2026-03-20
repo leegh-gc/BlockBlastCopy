@@ -25,10 +25,11 @@ const DraggableBlock: React.FC = () => {
       className="fixed pointer-events-none z-50"
       style={{
         left: x - 30,
-        top: y - 30,
+        top: y - 75,
         transform: 'scale(1.1)',
         filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))',
         opacity: 0.9,
+        willChange: 'transform',
       }}
     >
       <BlockPreview block={block} cellSize={22} />

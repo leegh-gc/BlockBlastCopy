@@ -1,10 +1,11 @@
-import { useRef } from 'react'
+import { lazy, Suspense, useRef } from 'react'
 import Board from './components/Board/Board'
 import BlockTray from './components/Block/BlockTray'
 import DraggableBlock from './components/Block/DraggableBlock'
-import GameOverModal from './components/UI/GameOverModal'
 import ScoreDisplay from './components/UI/ScoreDisplay'
 import './index.css'
+
+const GameOverModal = lazy(() => import('./components/UI/GameOverModal'))
 
 function App() {
   const boardRef = useRef<HTMLDivElement>(null)
@@ -33,7 +34,9 @@ function App() {
       </main>
 
       <DraggableBlock />
-      <GameOverModal />
+      <Suspense fallback={null}>
+        <GameOverModal />
+      </Suspense>
     </div>
   )
 }

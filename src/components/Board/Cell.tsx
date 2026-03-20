@@ -11,13 +11,25 @@ interface CellProps {
   isAnimating?: boolean
 }
 
+const areEqual = (prev: CellProps, next: CellProps) =>
+  prev.filled === next.filled &&
+  prev.color === next.color &&
+  prev.isPreview === next.isPreview &&
+  prev.isInvalid === next.isInvalid &&
+  prev.isAnimating === next.isAnimating
+
 const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInvalid, isAnimating }) => {
   const bg = filled && color ? color : 'bg-gray-100'
+  const needsGpu = isAnimating || isPreview || isInvalid
 
   return (
     <motion.div
       className={['rounded-sm relative', bg].join(' ')}
-      style={{ border: '1px solid #E5E5EA', aspectRatio: '1 / 1' }}
+      style={{
+        border: '1px solid #E5E5EA',
+        aspectRatio: '1 / 1',
+        willChange: needsGpu ? 'opacity, transform' : 'auto',
+      }}
       animate={isAnimating ? { opacity: 0, scale: 0.7 } : { opacity: 1, scale: 1 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
     >
@@ -41,7 +53,7 @@ const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInva
       )}
     </motion.div>
   )
-})
+}, areEqual)
 
 Cell.displayName = 'Cell'
 

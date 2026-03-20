@@ -97,7 +97,7 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
         window.removeEventListener('mouseup', onMouseUp)
       }
 
-      window.addEventListener('mousemove', onMouseMove)
+      window.addEventListener('mousemove', onMouseMove, { passive: true })
       window.addEventListener('mouseup', onMouseUp)
     },
     [handleDragStart, handleDragMove, handleDragEnd, isAnimating]

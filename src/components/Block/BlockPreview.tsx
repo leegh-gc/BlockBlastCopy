@@ -6,7 +6,7 @@ interface BlockPreviewProps {
   cellSize?: number
 }
 
-const BlockPreview: React.FC<BlockPreviewProps> = ({ block, cellSize = 24 }) => {
+const BlockPreview: React.FC<BlockPreviewProps> = React.memo(({ block, cellSize = 24 }) => {
   const { shape, color } = block
   const rows = shape.length
   const cols = shape[0]?.length ?? 0
@@ -17,6 +17,8 @@ const BlockPreview: React.FC<BlockPreviewProps> = ({ block, cellSize = 24 }) => 
       style={{
         gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,
         gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
+        minWidth: 44,
+        minHeight: 44,
       }}
       data-testid={`block-preview-${block.id}`}
     >
@@ -34,6 +36,8 @@ const BlockPreview: React.FC<BlockPreviewProps> = ({ block, cellSize = 24 }) => 
       )}
     </div>
   )
-}
+})
+
+BlockPreview.displayName = 'BlockPreview'
 
 export default BlockPreview

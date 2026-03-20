@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Cell from './Cell'
+import LineClearEffect from './LineClearEffect'
 import { useGameStore } from '../../stores/gameStore'
 import { canPlaceBlock, getBlockCells } from '../../utils/boardUtils'
 import { BOARD_SIZE } from '../../constants/game'
@@ -75,6 +76,7 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
           })
         )}
       </div>
+      <LineClearEffect />
     </motion.div>
   )
 }

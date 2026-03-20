@@ -11,9 +11,13 @@ body {
   background-color: #F2F2F7;
   color: #1c1c1e;
   min-height: 100dvh;
-  touch-action: pan-y;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #root {
   min-height: 100dvh;
+  contain: layout style;
 }
