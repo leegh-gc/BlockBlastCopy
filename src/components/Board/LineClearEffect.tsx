@@ -2,12 +2,14 @@ import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../../stores/gameStore'
 import { BOARD_SIZE } from '../../constants/game'
+import { useAnimationDuration } from '../../hooks/useAnimationDuration'
 
 /**
  * 라인 제거 시 flash 효과 오버레이.
  * 파티클 대신 단순 flash로 성능 우선 구현.
  */
 const LineClearEffect: React.FC = () => {
+  const getDuration = useAnimationDuration()
   const animatingLines = useGameStore((state) => state.animatingLines)
 
   if (!animatingLines) return null
@@ -41,7 +43,7 @@ const LineClearEffect: React.FC = () => {
             }}
             initial={{ opacity: 0.9 }}
             animate={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            transition={{ duration: getDuration(0.3), ease: 'easeOut' }}
           />
         )
       })}

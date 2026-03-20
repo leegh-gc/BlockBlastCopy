@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useGameStore } from '../../stores/gameStore'
 import BlockPreview from './BlockPreview'
 import type { Block, PixelPosition } from '../../types/game'
+import { useAnimationDuration } from '../../hooks/useAnimationDuration'
 
 const CELL_SIZE = 22
 const DRAG_LIFT_MARGIN = 20
@@ -15,6 +16,7 @@ const DraggableBlock: React.FC = () => {
   const dragState = useGameStore((state) => state.dragState)
   const currentBlocks = useGameStore((state) => state.currentBlocks)
 
+  const getDuration = useAnimationDuration()
   const [showBounce, setShowBounce] = useState(false)
   const lastPosRef = useRef<PixelPosition | null>(null)
   const lastBlockRef = useRef<Block | null>(null)
@@ -69,7 +71,7 @@ const DraggableBlock: React.FC = () => {
             }
           : { x: 0, scale: 1.1, opacity: 0.9 }
       }
-      transition={showBounce ? { duration: 0.4, ease: 'easeOut' } : { duration: 0 }}
+      transition={showBounce ? { duration: getDuration(0.4), ease: 'easeOut' } : { duration: 0 }}
     >
       <BlockPreview block={block} cellSize={CELL_SIZE} />
     </motion.div>

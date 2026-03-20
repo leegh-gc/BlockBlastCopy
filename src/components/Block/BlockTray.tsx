@@ -13,7 +13,7 @@ const BlockTray: React.FC<BlockTrayProps> = ({ boardRef }) => {
 
   return (
     <div
-      className="flex items-center justify-around w-full mt-4 p-4 rounded-2xl"
+      className="flex items-center justify-around w-full mt-4 p-4 rounded-2xl dark:bg-[#2C2C2E]"
       style={{ background: '#FFFFFF' }}
       data-testid="block-tray"
     >

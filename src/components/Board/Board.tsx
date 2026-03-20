@@ -5,12 +5,14 @@ import LineClearEffect from './LineClearEffect'
 import { useGameStore } from '../../stores/gameStore'
 import { canPlaceBlock, getBlockCells } from '../../utils/boardUtils'
 import { BOARD_SIZE } from '../../constants/game'
+import { useAnimationDuration } from '../../hooks/useAnimationDuration'
 
 interface BoardProps {
   boardRef: React.RefObject<HTMLDivElement | null>
 }
 
 const Board: React.FC<BoardProps> = ({ boardRef }) => {
+  const getDuration = useAnimationDuration()
   const board = useGameStore((state) => state.board)
   const dragState = useGameStore((state) => state.dragState)
   const currentBlocks = useGameStore((state) => state.currentBlocks)
@@ -47,15 +49,15 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
   return (
     <motion.div
       ref={boardRef}
-      className="relative w-full max-w-[500px] mx-auto rounded-2xl overflow-hidden"
-      style={{ background: '#FFFFFF', touchAction: 'none' }}
+      className="relative w-full max-w-[500px] mx-auto rounded-2xl overflow-hidden dark:bg-[#2C2C2E]"
+      style={{ background: 'var(--board-bg, #FFFFFF)', touchAction: 'none' }}
       data-testid="game-board"
       animate={isShaking ? { x: [-8, 8, -6, 6, -4, 4, -2, 2, 0] } : { x: 0 }}
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      transition={{ duration: getDuration(0.5), ease: 'easeInOut' }}
     >
       <div
-        className="grid gap-0.5 p-1 rounded-lg"
-        style={{ background: '#FFFFFF', gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)` }}
+        className="grid gap-0.5 p-1 rounded-lg dark:bg-[#2C2C2E]"
+        style={{ background: 'inherit', gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)` }}
       >
         {board.map((row, rowIdx) =>
           row.map((cell, colIdx) => {

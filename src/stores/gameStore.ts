@@ -8,6 +8,7 @@ import { canPlaceBlock } from '../utils/boardUtils'
 import { getCompletedLines, clearLines } from '../utils/lineUtils'
 import { calcPlacementScore, calcLineClearScore, calcComboScore } from '../utils/scoreUtils'
 import { canAnyBlockBePlaced } from '../utils/gameOverUtils'
+import { useStatsStore } from './statsStore'
 
 function createEmptyBoard(): Cell[][] {
   return Array.from({ length: BOARD_SIZE }, () =>
@@ -48,6 +49,8 @@ export const useGameStore = create<GameStore>()(
     isAnimating: false,
     isShaking: false,
     lastAudioEvent: null,
+    currentMaxCombo: 0,
+    sessionLinesCleared: 0,
   })
 
   return {
@@ -65,7 +68,7 @@ export const useGameStore = create<GameStore>()(
     },
 
     placeBlock: (blockId: string, row: number, col: number) => {
-      const { board, currentBlocks, score, highScore, comboCount } = get()
+      const { board, currentBlocks, score, highScore, comboCount, currentMaxCombo, sessionLinesCleared } = get()
       const block = currentBlocks.find((b) => b.id === blockId)
       if (!block) return
 
@@ -104,6 +107,8 @@ export const useGameStore = create<GameStore>()(
 
       const placeAudioEvent: AudioEvent = 'place'
       const clearAudioEvent: AudioEvent = newCombo > 1 ? 'combo' : 'clear'
+      const newLinesCleared = sessionLinesCleared + lineCount
+      const newMaxCombo = newCombo > currentMaxCombo ? newCombo : currentMaxCombo
 
       if (lineCount > 0) {
         // 라인 애니메이션: 먼저 animatingLines 설정, 300ms 후 실제 제거
@@ -113,6 +118,8 @@ export const useGameStore = create<GameStore>()(
           highScore: newHighScore,
           dragState: initialDragState,
           comboCount: newCombo,
+          currentMaxCombo: newMaxCombo,
+          sessionLinesCleared: newLinesCleared,
           animatingLines: { rows: completedRows, cols: completedCols },
           isAnimating: true,
           lastAudioEvent: clearAudioEvent,
@@ -120,6 +127,7 @@ export const useGameStore = create<GameStore>()(
         setTimeout(() => {
           const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
           if (isGameOver) {
+            useStatsStore.getState().recordGameEnd(newScore, newMaxCombo, newLinesCleared)
             set({
               board: clearedBoard,
               currentBlocks: nextBlocks,
@@ -143,6 +151,7 @@ export const useGameStore = create<GameStore>()(
         // 5. 게임 오버 판정
         const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
         if (isGameOver) {
+          useStatsStore.getState().recordGameEnd(newScore, newMaxCombo, newLinesCleared)
           set({
             board: clearedBoard,
             score: newScore,
@@ -150,6 +159,8 @@ export const useGameStore = create<GameStore>()(
             currentBlocks: nextBlocks,
             dragState: initialDragState,
             comboCount: newCombo,
+            currentMaxCombo: newMaxCombo,
+            sessionLinesCleared: newLinesCleared,
             animatingLines: null,
             isAnimating: false,
             isShaking: true,
@@ -164,6 +175,8 @@ export const useGameStore = create<GameStore>()(
             currentBlocks: nextBlocks,
             dragState: initialDragState,
             comboCount: newCombo,
+            currentMaxCombo: newMaxCombo,
+            sessionLinesCleared: newLinesCleared,
             animatingLines: null,
             isAnimating: false,
             isGameOver: false,

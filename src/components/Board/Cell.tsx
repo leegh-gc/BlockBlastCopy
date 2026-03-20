@@ -21,7 +21,7 @@ const areEqual = (prev: CellProps, next: CellProps) =>
   prev.isAnimating === next.isAnimating
 
 const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInvalid, isAnimating }) => {
-  const bg = filled && color ? color : 'bg-gray-100'
+  const bg = filled && color ? color : 'bg-gray-100 dark:bg-[#3A3A3C]'
   const needsGpu = isAnimating || isPreview || isInvalid
 
   return (

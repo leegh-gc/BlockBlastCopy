@@ -10,6 +10,17 @@
     <meta name="apple-mobile-web-app-title" content="BlockBlast" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
     <title>Block Blast</title>
+    <script>
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem('block-blast-settings') || '{}')
+          var theme = (s && s.state && s.state.theme) || 'system'
+          var isDark = theme === 'dark' ||
+            (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          if (isDark) document.documentElement.classList.add('dark')
+        } catch (e) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

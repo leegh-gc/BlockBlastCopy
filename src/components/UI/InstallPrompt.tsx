@@ -11,7 +11,7 @@ const InstallPrompt: React.FC = () => {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed bottom-4 left-4 right-4 z-40 rounded-2xl p-4 flex items-center gap-3 shadow-lg"
+          className="fixed bottom-4 left-4 right-4 z-40 rounded-2xl p-4 flex items-center gap-3 shadow-lg dark:bg-[#2C2C2E]"
           style={{ background: '#FFFFFF', maxWidth: 500, margin: '0 auto' }}
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -20,7 +20,7 @@ const InstallPrompt: React.FC = () => {
         >
           <div className="text-2xl">🎮</div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-gray-800 text-sm">홈 화면에 추가</p>
+            <p className="font-semibold text-gray-800 dark:text-white text-sm">홈 화면에 추가</p>
             {showIOSHint ? (
               <p className="text-xs text-gray-500 mt-0.5">
                 Safari 공유 버튼 → <strong>홈 화면에 추가</strong>

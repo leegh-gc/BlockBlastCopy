@@ -1,8 +1,10 @@
 import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useGameStore } from '../../stores/gameStore'
+import { useAnimationDuration } from '../../hooks/useAnimationDuration'
 
 const GameOverModal: React.FC = () => {
+  const getDuration = useAnimationDuration()
   const isGameOver = useGameStore((state) => state.isGameOver)
   const score = useGameStore((state) => state.score)
   const highScore = useGameStore((state) => state.highScore)
@@ -17,14 +19,15 @@ const GameOverModal: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: getDuration(0.2) }}
         >
           <div className="absolute inset-0 bg-black/60" />
           <motion.div
-            className="relative bg-gray-900 rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl min-w-[280px]"
+            className="relative rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl min-w-[280px] bg-gray-900 dark:bg-[#2C2C2E]"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25, duration: getDuration(0.3) }}
           >
             <h2 className="text-3xl font-bold text-white tracking-widest">GAME OVER</h2>
 
