@@ -3,12 +3,11 @@ import { persist } from 'zustand/middleware'
 import type { GameState, Cell, DragState } from '../types/game'
 import { STORAGE_KEY } from '../utils/storage'
 import { getRandomBlocks } from '../utils/blockUtils'
+import { BOARD_SIZE } from '../constants/game'
 import { canPlaceBlock } from '../utils/boardUtils'
 import { getCompletedLines, clearLines } from '../utils/lineUtils'
 import { calcPlacementScore, calcLineClearScore, calcComboScore } from '../utils/scoreUtils'
 import { canAnyBlockBePlaced } from '../utils/gameOverUtils'
-
-const BOARD_SIZE = 8
 
 function createEmptyBoard(): Cell[][] {
   return Array.from({ length: BOARD_SIZE }, () =>
@@ -45,6 +44,8 @@ export const useGameStore = create<GameStore>()(
     isGameOver: false,
     comboCount: 0,
     animatingLines: null,
+    isAnimating: false,
+    isShaking: false,
   })
 
   return {
@@ -108,29 +109,58 @@ export const useGameStore = create<GameStore>()(
           dragState: initialDragState,
           comboCount: newCombo,
           animatingLines: { rows: completedRows, cols: completedCols },
+          isAnimating: true,
         })
         setTimeout(() => {
           const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
-          set({
-            board: clearedBoard,
-            currentBlocks: nextBlocks,
-            animatingLines: null,
-            isGameOver,
-          })
+          if (isGameOver) {
+            set({
+              board: clearedBoard,
+              currentBlocks: nextBlocks,
+              animatingLines: null,
+              isAnimating: false,
+              isShaking: true,
+            })
+            setTimeout(() => set({ isGameOver: true, isShaking: false }), 500)
+          } else {
+            set({
+              board: clearedBoard,
+              currentBlocks: nextBlocks,
+              animatingLines: null,
+              isAnimating: false,
+              isGameOver: false,
+            })
+          }
         }, 300)
       } else {
         // 5. 게임 오버 판정
         const isGameOver = !canAnyBlockBePlaced(clearedBoard, nextBlocks)
-        set({
-          board: clearedBoard,
-          score: newScore,
-          highScore: newHighScore,
-          currentBlocks: nextBlocks,
-          dragState: initialDragState,
-          comboCount: newCombo,
-          animatingLines: null,
-          isGameOver,
-        })
+        if (isGameOver) {
+          set({
+            board: clearedBoard,
+            score: newScore,
+            highScore: newHighScore,
+            currentBlocks: nextBlocks,
+            dragState: initialDragState,
+            comboCount: newCombo,
+            animatingLines: null,
+            isAnimating: false,
+            isShaking: true,
+          })
+          setTimeout(() => set({ isGameOver: true, isShaking: false }), 500)
+        } else {
+          set({
+            board: clearedBoard,
+            score: newScore,
+            highScore: newHighScore,
+            currentBlocks: nextBlocks,
+            dragState: initialDragState,
+            comboCount: newCombo,
+            animatingLines: null,
+            isAnimating: false,
+            isGameOver: false,
+          })
+        }
       }
     },
 

@@ -1,7 +1,6 @@
 import type { Cell, Block } from '../types/game'
 import { canPlaceBlock } from './boardUtils'
-
-const BOARD_SIZE = 8
+import { BOARD_SIZE } from '../constants/game'
 
 export function canAnyBlockBePlaced(board: Cell[][], blocks: Block[]): boolean {
   if (blocks.length === 0) return false

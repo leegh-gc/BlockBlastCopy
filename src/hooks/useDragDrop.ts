@@ -1,8 +1,7 @@
 import { useCallback, useRef } from 'react'
 import { useGameStore } from '../stores/gameStore'
 import type { Block } from '../types/game'
-
-const BOARD_SIZE = 8
+import { BOARD_SIZE } from '../constants/game'
 
 interface UseDragDropOptions {
   boardRef: React.RefObject<HTMLDivElement | null>
@@ -12,6 +11,7 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
   const setDragState = useGameStore((state) => state.setDragState)
   const placeBlock = useGameStore((state) => state.placeBlock)
   const currentBlocks = useGameStore((state) => state.currentBlocks)
+  const isAnimating = useGameStore((state) => state.isAnimating)
 
   // 드래그 중 블록 정보를 ref로 저장 (리렌더링 없이 접근)
   const draggingBlockRef = useRef<Block | null>(null)
@@ -86,6 +86,7 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
   // 마우스 이벤트 핸들러
   const onMouseDown = useCallback(
     (block: Block) => (e: React.MouseEvent) => {
+      if (isAnimating) return
       e.preventDefault()
       handleDragStart(block, e.clientX, e.clientY)
 
@@ -99,12 +100,13 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
       window.addEventListener('mousemove', onMouseMove)
       window.addEventListener('mouseup', onMouseUp)
     },
-    [handleDragStart, handleDragMove, handleDragEnd]
+    [handleDragStart, handleDragMove, handleDragEnd, isAnimating]
   )
 
   // 터치 이벤트 핸들러
   const onTouchStart = useCallback(
     (block: Block) => (e: React.TouchEvent) => {
+      if (isAnimating) return
       e.preventDefault()
       const touch = e.touches[0]
       handleDragStart(block, touch.clientX, touch.clientY)
@@ -124,7 +126,7 @@ export function useDragDrop({ boardRef }: UseDragDropOptions) {
       window.addEventListener('touchmove', onTouchMove, { passive: false })
       window.addEventListener('touchend', onTouchEnd)
     },
-    [handleDragStart, handleDragMove, handleDragEnd]
+    [handleDragStart, handleDragMove, handleDragEnd, isAnimating]
   )
 
   return { onMouseDown, onTouchStart, currentBlocks }

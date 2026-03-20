@@ -1,6 +1,5 @@
 import type { Cell, Block, Position } from '../types/game'
-
-const BOARD_SIZE = 8
+import { BOARD_SIZE } from '../constants/game'
 
 export function canPlaceBlock(board: Cell[][], block: Block, row: number, col: number): boolean {
   for (let dr = 0; dr < block.shape.length; dr++) {

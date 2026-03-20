@@ -1,6 +1,5 @@
 import type { Cell } from '../types/game'
-
-const BOARD_SIZE = 8
+import { BOARD_SIZE } from '../constants/game'
 
 export function getCompletedLines(board: Cell[][]): { rows: number[]; cols: number[] } {
   const rows: number[] = []

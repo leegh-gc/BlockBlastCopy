@@ -54,4 +54,6 @@ export interface GameState {
   isGameOver: boolean;
   comboCount: number;      // 연속 라인 제거 횟수
   animatingLines: { rows: number[]; cols: number[] } | null; // 애니메이션 중인 라인
+  isAnimating: boolean;    // 라인 제거 애니메이션 진행 중 (입력 차단용)
+  isShaking: boolean;      // 게임 오버 보드 셰이크
 }
