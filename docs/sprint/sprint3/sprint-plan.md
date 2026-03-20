@@ -434,3 +434,9 @@ const areEqual = (prev: CellProps, next: CellProps) =>
 - [x] 완료 기준(Definition of Done) 12개 항목이 측정 가능하게 정의됨
 - [x] ROADMAP.md의 기술 고려사항(React.memo, will-change, Framer Motion layout 주의) 반영
 - [x] Task 6(파티클 효과)에 scope-out 기준 명확히 기재
+
+---
+
+## 검증 결과
+
+- [Sprint 3 검증 보고서](sprint3/verification-report.md)
