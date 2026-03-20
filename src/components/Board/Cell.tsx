@@ -22,10 +22,22 @@ const Cell: React.FC<CellProps> = React.memo(({ filled, color, isPreview, isInva
       transition={{ duration: 0.25, ease: 'easeOut' }}
     >
       {isPreview && !isInvalid && (
-        <div className="absolute inset-0 rounded-sm bg-green-400 opacity-40" />
+        <motion.div
+          className="absolute inset-0 rounded-sm bg-green-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1 }}
+        />
       )}
       {isInvalid && (
-        <div className="absolute inset-0 rounded-sm bg-red-400 opacity-40" />
+        <motion.div
+          className="absolute inset-0 rounded-sm bg-red-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1 }}
+        />
       )}
     </motion.div>
   )

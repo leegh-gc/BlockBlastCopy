@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
+import { motion } from 'framer-motion'
 import Cell from './Cell'
 import { useGameStore } from '../../stores/gameStore'
 import { canPlaceBlock, getBlockCells } from '../../utils/boardUtils'
-
-const BOARD_SIZE = 8
+import { BOARD_SIZE } from '../../constants/game'
 
 interface BoardProps {
   boardRef: React.RefObject<HTMLDivElement | null>
@@ -14,6 +14,7 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
   const dragState = useGameStore((state) => state.dragState)
   const currentBlocks = useGameStore((state) => state.currentBlocks)
   const animatingLines = useGameStore((state) => state.animatingLines)
+  const isShaking = useGameStore((state) => state.isShaking)
 
   const previewInfo = useMemo(() => {
     if (!dragState.isDragging || !dragState.blockId || !dragState.boardPos) return null
@@ -43,11 +44,13 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
   }, [animatingLines])
 
   return (
-    <div
+    <motion.div
       ref={boardRef}
       className="relative w-full max-w-[500px] mx-auto rounded-2xl overflow-hidden"
       style={{ background: '#FFFFFF', touchAction: 'none' }}
       data-testid="game-board"
+      animate={isShaking ? { x: [-8, 8, -6, 6, -4, 4, -2, 2, 0] } : { x: 0 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
       <div
         className="grid gap-0.5 p-1 rounded-lg"
@@ -72,7 +75,7 @@ const Board: React.FC<BoardProps> = ({ boardRef }) => {
           })
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
