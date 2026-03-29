@@ -60,4 +60,6 @@ export interface GameState {
   isAnimating: boolean;    // 라인 제거 애니메이션 진행 중 (입력 차단용)
   isShaking: boolean;      // 게임 오버 보드 셰이크
   lastAudioEvent: AudioEvent; // 사운드/햅틱 트리거용 마지막 이벤트
+  currentMaxCombo: number; // 현재 게임에서 달성한 최고 콤보
+  sessionLinesCleared: number; // 현재 게임에서 제거한 총 라인 수
 }

@@ -39,8 +39,8 @@ const ScoreDisplay: React.FC = () => {
   return (
     <div className="flex justify-between items-center w-full px-2 py-3">
       <div className="flex flex-col items-center relative">
-        <span className="text-gray-500 text-xs uppercase tracking-widest">Score</span>
-        <span className="text-2xl font-bold text-gray-900">{displayScore.toLocaleString()}</span>
+        <span className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-widest">Score</span>
+        <span className="text-2xl font-bold text-gray-900 dark:text-white">{displayScore.toLocaleString()}</span>
         {floats.map((f) => (
           <span
             key={f.id}
@@ -51,7 +51,7 @@ const ScoreDisplay: React.FC = () => {
         ))}
       </div>
       <div className="flex flex-col items-center">
-        <span className="text-gray-500 text-xs uppercase tracking-widest">Best</span>
+        <span className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-widest">Best</span>
         <span className="text-2xl font-bold text-yellow-500">{highScore.toLocaleString()}</span>
       </div>
     </div>
